@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hit Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* Black background */
+            color: #fff; /* White text for contrast */
+        }
+        .container {
+            background-color: #1e1e1e; /* Dark gray container for contrast */
+            margin: 50px auto;
+            padding: 20px;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #00bcd4; /* Light blue header for visibility */
+        }
+        input[type="file"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #444; /* Dark border */
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #333; /* Dark input background */
+            color: #fff; /* White text in inputs */
+        }
+        button {
+            background-color: #00bcd4; /* Light blue button */
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        button:hover {
+            background-color: #0097a7; /* Slightly darker blue on hover */
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa; /* Light gray footer text */
+        }
+        .logo {
+            width: 200px; /* Fixed logo size */
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2); /* Soft white shadow */
+        }
+    </style>
+</head>
+<body>
+<!-- Snow Effect -->
+<script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="text/javascript"></script>
+
+<!-- Background Music -->
+<audio autoplay loop>
+    <source src="https://b.top4top.io/m_3271pxhud0.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<!-- Main Container -->
+<div class="container">
+    <img src="https://b.top4top.io/p_327105svo0.jpg" class="logo" alt="Logo">
+    <h1>Welcome </h1>
+    <label for="comboFile">Upload Combo File:</label>
+    <input type="file" id="comboFile" accept=".txt, .csv">
+    <label for="siteInput">Enter Site/Domain:</label>
+    <input type="text" id="siteInput" placeholder="e.g. facebook.com">
+    <button onclick="processFile()">PROCESS AND DOWNLOAD</button>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    Shared with <strong>tiiny.host</strong>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function processFile() {
+        const file = document.getElementById("comboFile").files[0];
+        const site = document.getElementById("siteInput").value;
+
+        // Validation checks
+        if (!file) {
+            alert("Please upload a file.");
+            return;
+        }
+        if (!site) {
+            alert("Please enter a site or domain.");
+            return;
+        }
+
+        // FileReader to process the file content
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const content = e.target.result;
+            const lines = content.split("\n");
+            const filteredLines = lines.filter(line => line.includes(site));
+
+            // Alert if no matches are found
+            if (filteredLines.length === 0) {
+                alert("No matches found for the specified site.");
+                return;
+            }
+
+            // Generate and trigger download for filtered content
+            const blob = new Blob([filteredLines.join("\n")], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `filtered_${site}_combo.txt`;
+            link.click();
+        };
+        reader.readAsText(file);
+    }
+</script>
+</body>
+</html>
